@@ -1,0 +1,8 @@
+fastapi
+uvicorn[standard]
+python-dotenv
+apify-client
+anthropic
+gspread
+pydantic
+pytest
