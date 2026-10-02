@@ -68,7 +68,7 @@ def process_lead(lead: dict) -> str:
     return row["Status"]
 
 
-@app.get("/health")
+@app.api_route("/health", methods=["GET", "HEAD"])
 def health():
     return {"ok": True}
 
