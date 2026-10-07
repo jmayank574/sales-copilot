@@ -20,11 +20,13 @@ The reader is a Fernstone sales rep who will call this lead. The lead filled in 
 3. **likely_needs**: up to 3 hypotheses. Each has the coverage line (from the lines Fernstone names) and the evidence in the data that suggests it.
 4. **likely_objections**: up to 2, chosen from the objections playbook, with a LACE-style reply (see objections file). Pick the ones this lead would plausibly raise.
 5. **next_action**: one concrete instruction for the rep, consistent with the routing decision provided.
-6. **followup_email**: subject and a body under 90 words. Friendly, plain language, one clear next step, no pricing or coverage claims.
+6. **followup_email**: subject and a body under 90 words. Friendly, plain language, one clear next step, no pricing or coverage claims. It must work as the FIRST message the lead receives after submitting the form, so never say or imply a call or chat has already happened (no "great talking", "thanks for chatting", "as promised", "following our call"). Open by thanking them for reaching out to Fernstone. Offer two easy options: reply with a few details (such as renewal date and rough headcount or vehicles, whichever the brief says is unknown), or pick a 15-minute call time. Sign off with the placeholder [Rep name].
 
 ## Icebreaker rules
 - 1-2 short sentences, under 40 words, casual spoken English, like a young friendly peer. Not a salesperson.
-- Anchor on one concrete, specific detail about their business or role from the data.
+- Start with "Hey <first name>," and go straight to the detail. No "thanks for reaching out" filler.
+- Anchor on the single MOST DISTINCTIVE concrete detail about their business or role from the data. Prefer, in this order: their founding story or family heritage (for example "since 1921", "third generation"), the specific kind of work they do, where they operate, or recent news.
+- Do NOT use accreditations, certifications, awards, association memberships, review ratings or badges (for example BBB accreditation, "award winner", "GAF Master Elite") as the hook. They are generic and every competitor has them.
 - Banned: "I came across your profile", "I was impressed", "I hope you're doing well", "passionate", "thought leader", "inspiring", and any compliment that could apply to anyone.
 - End with a light, genuine question about their business. No pitch. Do not mention insurance products or pricing yet.
 - If the data is too thin for a specific detail, write a plain, honest opener that references the form submission, and say so in next_action.

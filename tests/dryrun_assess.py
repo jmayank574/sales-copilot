@@ -14,6 +14,8 @@ LEADS = {
              "linkedin": "https://www.linkedin.com/in/adam-levine-cfs/"},
     "cates": {"name": "Dan Heydon", "website": "https://www.carrier.com/us/en/residential/dealers/ks/lenexa/14361-w-96th-ter-14031-loc",
               "linkedin": "https://www.linkedin.com/in/dan-heydon-025634205/"},
+    "frey": {"name": "Mark Frey", "website": "https://freyelectric.com",
+             "linkedin": "https://linkedin.com/in/mafrey"},
     "designer": {"name": "Jesse Nyberg", "website": "https://jessenyberg.design/",
                  "linkedin": "https://www.linkedin.com/in/jessenyberg/"},
     "roehl": {"name": "Rick Roehl", "website": "https://www.roehl.jobs/", "linkedin": ""},
