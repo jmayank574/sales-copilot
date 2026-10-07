@@ -5,6 +5,10 @@ description: Likely objections for Fernstone inbound calls and how to answer the
 
 # Objections playbook
 
+## When to Use
+Loaded into the brief prompt. The agent picks the one or two objections this lead would plausibly raise, and adapts the reply to the lead's business.
+
+## Framework
 Method: **LACE** = Listen, Acknowledge, Clarify, Educate. Ask ONE clarifying question before offering any proof. Replies are spoken-style and short. Proof points may only come from the Fernstone context file.
 
 Tags: **[site]** = grounded in fernstone.com. **[assumption]** = generic broker objection, to be confirmed against what Fernstone reps actually hear.

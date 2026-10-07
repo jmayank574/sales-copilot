@@ -5,6 +5,9 @@ description: Rules for the rep-facing sales brief and icebreaker. Loaded into th
 
 # Sales brief guidelines
 
+## When to Use
+Loaded into the brief prompt for every lead that is not routed to "Nurture / disqualify". The sections below are the Framework; the icebreaker rules and honesty rules are the Tips.
+
 The reader is a Fernstone sales rep who will call this lead. The lead filled in the website form, so it is a warm inbound call. The brief is read in under 60 seconds. Everything is specific to THIS lead. No generic filler.
 
 ## Honesty rules (insurance is regulated)

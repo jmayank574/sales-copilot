@@ -1,5 +1,5 @@
 {
-  "version": "0.1-draft",
+  "version": "0.2-draft",
   "notes": "Weights and bands are proposals for the founder to confirm. Factors with enabled=false are excluded and the total is rescaled to 100 over the enabled factors.",
   "priority_bands": {
     "high": 70,
@@ -11,16 +11,16 @@
       "label": "Target industry",
       "max_points": 25,
       "enabled": true,
-      "source": "assumption",
-      "guidance": "Is this an established operating business in a line of work with clear commercial insurance exposure (for example workers' comp, commercial auto, general or professional liability, property)?",
+      "source": "site (Verticals menu) plus assumption for adjacent businesses",
+      "guidance": "Judge against Fernstone's published verticals listed in the Fernstone context (Security, Garage, Daycares, Staffing, Bars and restaurants, Fire and lifesafety, Pest control, Med spas, Fleet repair, Nightlife, Hotels). In your evidence, name the matching vertical, or say it is adjacent or outside them.",
       "levels": {
         "strong": {
           "fraction": 1.0,
-          "definition": "Clearly an operating business whose work creates insurable exposure."
+          "definition": "The business is in one of Fernstone's published verticals, or is clearly the same kind of business (for example a fire sprinkler contractor is Fire and lifesafety)."
         },
         "partial": {
           "fraction": 0.5,
-          "definition": "Probably a business with some exposure, but the work or scale is unclear."
+          "definition": "Adjacent: an operating business with premises, crews or vehicles and similar exposures, but not in a published vertical (for example an electrical or HVAC contractor, or a trucking company)."
         },
         "none": {
           "fraction": 0.0,
@@ -142,11 +142,11 @@
       "levels": {
         "strong": {
           "fraction": 1.0,
-          "definition": "An explicit near-term need or a clear growth event."
+          "definition": "An explicit near-term need, or at least TWO independent growth or change signals cited in the evidence (for example a new location plus a new contract). A single growth signal is partial."
         },
         "partial": {
           "fraction": 0.5,
-          "definition": "Specific growth evidence that may create an insurance need (new location, new division, acquisition, big new contract)."
+          "definition": "One specific growth or change signal that may create an insurance need (new location, new division, acquisition, big new contract, ownership change)."
         },
         "none": {
           "fraction": 0.0,
@@ -157,6 +157,16 @@
           "definition": "No timing evidence. This is the expected default."
         }
       }
+    }
+  ],
+  "changelog": [
+    {
+      "version": "0.1-draft",
+      "change": "Initial six-factor rubric from public site facts and generic sales practice."
+    },
+    {
+      "version": "0.2-draft",
+      "change": "Target industry now keyed to Fernstone's published verticals (site menu). Adjacent businesses score partial. Added two-signal rule for strong buying trigger. Earlier in 0.1 iterations: size anchored to stated scale, decision-maker capped without LinkedIn, trigger tightened."
     }
   ]
 }
