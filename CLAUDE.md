@@ -15,20 +15,25 @@ Lead enrichment agent. A Typeform submission triggers a webhook. The script scra
 - Claude via the Anthropic API for enrichment (structured JSON output)
 - Google Sheets via gspread with a service account
 
+## Pipeline (local; not yet deployed)
+Scrape (LinkedIn + website) -> `app/assess.py` (Claude returns level/evidence/confidence per factor) -> `app/scoring.py` (code computes score + priority) -> `app/routing.py` (rules in `knowledge/routing.json`) -> `app/brief.py` (rep brief, skipped for Low) -> `app/sheets.py` (tab `Copilot`).
+Knowledge files in `knowledge/` (rubric.json, fernstone_context.md, brief_guidelines.md, objections.md, routing.json) hold all business content. Facts are tagged [site] or [assumption].
+
 ## Modules
 - `app/typeform.py`: verify signature, map answers to the 5 lead fields
 - `app/scrapers.py`: Apify calls for LinkedIn and website
 - `app/enrich.py`: Claude prompt, JSON schema, validation
 - `app/sheets.py`: dedupe on email, append row
 - `app/main.py`: `/webhook`, returns 200 fast, processes in a background task
+- `app/enrich.py`: legacy single-call scorer, no longer used by the pipeline
 
-## Sheet columns (in order)
-Full Name | Email | Phone | Company Website | LinkedIn URL | Niche/Industry | Primary Service | ICP Fit Score | ICP Fit Reason | Personalized Icebreaker | Status | Received At
+## Sheet
+Tab `Copilot`, columns defined by `HEADERS` in `app/sheets.py` (lead fields, score, priority, confidence, route, evidence, brief, status, then rep-review columns). The old `Sheet1` tab is the legacy format.
 
-Status values: `ok`, `partial` (one scraper failed), `error` (includes the error text).
+Status values: `ok`, `partial: ...` (a scraper or the brief failed), `error: ...`.
 
-## ICP scoring rubric (DRAFT, derived from fernstone.com)
-Score is an integer 1-10 for likelihood of being a real, insurable business buyer. 9-10 means an established operating business with a decision-maker as contact. 1-2 means not a business buyer or not enough information. Full wording is in `app/enrich.py`.
+## Scoring
+Six weighted factors in `knowledge/rubric.json` (industry 25, size 15, geography 10 [disabled until supported states are known], decision-maker 15, operational risk 20, buying trigger 15). Claude never produces the total; code does. Unknown or evidence-free factors score 0. Priority bands: High 70+, Medium 40+, Low below. Draft weights and bands for the founder to confirm.
 
 ## Icebreaker rules
 - 1-2 short sentences, under 40 words, young peer-to-peer tone, anchored on one concrete detail, ends with a light question.

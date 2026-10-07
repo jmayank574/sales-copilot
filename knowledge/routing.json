@@ -1,0 +1,36 @@
+{
+  "version": "0.1-draft",
+  "notes": "Rules are checked in order; the first match wins. Actions are shown in the sheet only. Nothing is sent automatically. Timing targets are for Fernstone to set.",
+  "rules": [
+    {
+      "name": "no_data",
+      "when": {"no_data": true},
+      "route": "Needs info",
+      "action": "No scraped data. Call to qualify: confirm what the business does, headcount, vehicles, locations and when coverage renews. Do not judge fit yet."
+    },
+    {
+      "name": "low_confidence",
+      "when": {"confidence": ["Low"]},
+      "route": "Needs info",
+      "action": "Evidence is thin, so the score is provisional. Call to qualify using the discovery questions before deciding priority."
+    },
+    {
+      "name": "high",
+      "when": {"priority": ["High"]},
+      "route": "Call now",
+      "action": "Strong fit. Call as soon as possible and open with the icebreaker, then the discovery questions."
+    },
+    {
+      "name": "medium",
+      "when": {"priority": ["Medium"]},
+      "route": "Follow up",
+      "action": "Possible fit. Add to the follow-up list. After rep review, send the follow-up email and try a call."
+    },
+    {
+      "name": "low",
+      "when": {"priority": ["Low"]},
+      "route": "Nurture / disqualify",
+      "action": "Likely not a fit. Rep reviews, then nurture or disqualify. No brief generated."
+    }
+  ]
+}

@@ -88,4 +88,5 @@ def assess(lead: dict, linkedin: dict | None, website_text: str | None, rubric: 
         raise RuntimeError("Claude did not return a tool call")
     out = dict(block.input)
     judgments = {k: out.pop(k) for k in [f["key"] for f in scoring.enabled_factors(rubric)] if k in out}
-    return {**out, "judgments": judgments, "result": scoring.compute(judgments, rubric)}
+    result = scoring.compute(judgments, rubric, {"linkedin_available": bool(linkedin)})
+    return {**out, "judgments": judgments, "result": result}

@@ -1,48 +1,28 @@
-"""Replay a fake Typeform payload through /webhook, print the sheet row, then delete it.
-Run: python -m tests.e2e_replay [--keep]"""
+"""Replay fake Typeform payloads through /webhook (real scrapers, Claude, sheet), print each row.
+Run: python -m tests.e2e_replay adam designer roehl [--delete]
+Rows are KEPT in the Copilot tab unless --delete is given."""
 import sys
 
 from fastapi.testclient import TestClient
 
 from app import sheets
 from app.main import app
+from tests.e2e_replay_payload import DEMO_LEADS, make_payload
 
-EMAIL = "bill.gates.demo@example.com"
-
-
-def field(fid, title, ftype):
-    return {"id": fid, "title": title, "type": ftype, "ref": fid}
-
-
-PAYLOAD = {
-    "form_response": {
-        "definition": {
-            "fields": [
-                field("f1", "What's your full name?", "short_text"),
-                field("f2", "What's your email?", "email"),
-                field("f3", "Phone number", "phone_number"),
-                field("f4", "Company website", "website"),
-                field("f5", "Your LinkedIn profile URL", "website"),
-            ]
-        },
-        "answers": [
-            {"type": "text", "text": "Bill Gates", "field": {"id": "f1", "ref": "f1", "type": "short_text"}},
-            {"type": "email", "email": EMAIL, "field": {"id": "f2", "ref": "f2", "type": "email"}},
-            {"type": "phone_number", "phone_number": "(demo - not real)", "field": {"id": "f3", "ref": "f3", "type": "phone_number"}},
-            {"type": "url", "url": "https://www.gatesnotes.com/", "field": {"id": "f4", "ref": "f4", "type": "website"}},
-            {"type": "url", "url": "https://www.linkedin.com/in/williamhgates/", "field": {"id": "f5", "ref": "f5", "type": "website"}},
-        ],
-    }
-}
-
-r = TestClient(app).post("/webhook", json=PAYLOAD)
-print("webhook:", r.status_code, r.json())
-
+keys = [a for a in sys.argv[1:] if not a.startswith("--")] or ["adam"]
+client = TestClient(app)
 ws = sheets._worksheet()
-cell = ws.find(EMAIL, in_column=sheets.EMAIL_COL)
-row = dict(zip(sheets.HEADERS, ws.row_values(cell.row)))
-for k, v in row.items():
-    print(f"{k}: {v}")
-if "--keep" not in sys.argv:
-    ws.delete_rows(cell.row)
-    print("(test row deleted)")
+
+for key in keys:
+    name, email, phone, website, linkedin = DEMO_LEADS[key]
+    r = client.post("/webhook", json=make_payload(name, email, phone, website, linkedin))
+    print(f"\n##### {key}: webhook {r.status_code}")
+    cell = ws.find(email, in_column=sheets.EMAIL_COL)
+    row = dict(zip(sheets.HEADERS, ws.row_values(cell.row)))
+    for k in sheets.HEADERS[:22]:
+        if k in ("Phone Number", "Email"):
+            continue
+        print(f"[{k}]\n{row.get(k, '')}\n")
+    if "--delete" in sys.argv:
+        ws.delete_rows(cell.row)
+        print("(row deleted)")

@@ -1,7 +1,10 @@
 {
   "version": "0.1-draft",
   "notes": "Weights and bands are proposals for the founder to confirm. Factors with enabled=false are excluded and the total is rescaled to 100 over the enabled factors.",
-  "priority_bands": {"high": 70, "medium": 40},
+  "priority_bands": {
+    "high": 70,
+    "medium": 40
+  },
   "factors": [
     {
       "key": "target_industry",
@@ -11,10 +14,22 @@
       "source": "assumption",
       "guidance": "Is this an established operating business in a line of work with clear commercial insurance exposure (for example workers' comp, commercial auto, general or professional liability, property)?",
       "levels": {
-        "strong": {"fraction": 1.0, "definition": "Clearly an operating business whose work creates insurable exposure."},
-        "partial": {"fraction": 0.5, "definition": "Probably a business with some exposure, but the work or scale is unclear."},
-        "none": {"fraction": 0.0, "definition": "Not a business buyer (individual, student, charity or foundation, insurance competitor) or negligible exposure."},
-        "unknown": {"fraction": 0.0, "definition": "Not enough information."}
+        "strong": {
+          "fraction": 1.0,
+          "definition": "Clearly an operating business whose work creates insurable exposure."
+        },
+        "partial": {
+          "fraction": 0.5,
+          "definition": "Probably a business with some exposure, but the work or scale is unclear."
+        },
+        "none": {
+          "fraction": 0.0,
+          "definition": "Not a business buyer (individual, student, charity or foundation, insurance competitor) or negligible exposure."
+        },
+        "unknown": {
+          "fraction": 0.0,
+          "definition": "Not enough information."
+        }
       }
     },
     {
@@ -25,10 +40,22 @@
       "source": "assumption",
       "guidance": "Enough operations to need a dedicated broker (employees, multiple locations or vehicles), but not a large enterprise with its own risk team.",
       "levels": {
-        "strong": {"fraction": 1.0, "definition": "Evidence of a real team, multiple locations or a fleet, at a mid-market scale."},
-        "partial": {"fraction": 0.5, "definition": "Small but real, or larger than typical, with some evidence."},
-        "none": {"fraction": 0.0, "definition": "Solo operator, or a very large enterprise or institution."},
-        "unknown": {"fraction": 0.0, "definition": "No size evidence."}
+        "strong": {
+          "fraction": 1.0,
+          "definition": "The data STATES scale: a headcount, a fleet size, or two or more named office or branch locations, at a mid-market level. Divisions, years in business or service-area breadth alone are NOT enough for strong."
+        },
+        "partial": {
+          "fraction": 0.5,
+          "definition": "Real operation with indirect scale signals only (divisions, years in business, service area, 'team', 'crews') but no stated headcount, fleet or multiple locations."
+        },
+        "none": {
+          "fraction": 0.0,
+          "definition": "Solo operator, or evidence of a very large enterprise or institution (for example thousands of employees or a national brand)."
+        },
+        "unknown": {
+          "fraction": 0.0,
+          "definition": "No size evidence."
+        }
       }
     },
     {
@@ -39,9 +66,18 @@
       "source": "not configured",
       "guidance": "Needs Fernstone's list of supported states or regions. Disabled until the founder provides it.",
       "levels": {
-        "strong": {"fraction": 1.0, "definition": "Operates in a supported region."},
-        "none": {"fraction": 0.0, "definition": "Operates only outside supported regions."},
-        "unknown": {"fraction": 0.0, "definition": "Location unclear."}
+        "strong": {
+          "fraction": 1.0,
+          "definition": "Operates in a supported region."
+        },
+        "none": {
+          "fraction": 0.0,
+          "definition": "Operates only outside supported regions."
+        },
+        "unknown": {
+          "fraction": 0.0,
+          "definition": "Location unclear."
+        }
       }
     },
     {
@@ -50,12 +86,24 @@
       "max_points": 15,
       "enabled": true,
       "source": "general sales practice",
-      "guidance": "Judge from the contact's LinkedIn title and the company site. Use only the title and role evidence provided.",
+      "guidance": "Judge from the contact's LinkedIn title. A name match on the company website alone is not confirmation (anyone can type a name into a form). Without a LinkedIn profile this factor is capped at partial by code.",
       "levels": {
-        "strong": {"fraction": 1.0, "definition": "Owner, founder, CEO, president, or CFO."},
-        "partial": {"fraction": 0.5, "definition": "VP, director, or operations/finance/risk manager who likely influences the decision."},
-        "none": {"fraction": 0.0, "definition": "Individual contributor or unrelated role."},
-        "unknown": {"fraction": 0.0, "definition": "Role cannot be confirmed from the data."}
+        "strong": {
+          "fraction": 1.0,
+          "definition": "Owner, founder, CEO, president, or CFO."
+        },
+        "partial": {
+          "fraction": 0.5,
+          "definition": "VP, director, or operations/finance/risk manager who likely influences the decision."
+        },
+        "none": {
+          "fraction": 0.0,
+          "definition": "Individual contributor or unrelated role."
+        },
+        "unknown": {
+          "fraction": 0.0,
+          "definition": "Role cannot be confirmed from the data."
+        }
       }
     },
     {
@@ -66,10 +114,22 @@
       "source": "site (loss-run FAQ: underwriters need operations, payroll, revenue, vehicles, locations)",
       "guidance": "Evidence of employees and payroll, vehicles, multiple locations, field or on-site work, hazardous operations, or contracts that require certificates of insurance.",
       "levels": {
-        "strong": {"fraction": 1.0, "definition": "Several clear exposure signals (for example field crews, a fleet, multiple locations, licensed trade work)."},
-        "partial": {"fraction": 0.5, "definition": "One or two signals, or signals that are implied but not stated."},
-        "none": {"fraction": 0.0, "definition": "Evidence points to little exposure (for example a purely online solo practice)."},
-        "unknown": {"fraction": 0.0, "definition": "No operational evidence."}
+        "strong": {
+          "fraction": 1.0,
+          "definition": "Several clear exposure signals (for example field crews, a fleet, multiple locations, licensed trade work)."
+        },
+        "partial": {
+          "fraction": 0.5,
+          "definition": "One or two signals, or signals that are implied but not stated."
+        },
+        "none": {
+          "fraction": 0.0,
+          "definition": "Evidence points to little exposure (for example a purely online solo practice)."
+        },
+        "unknown": {
+          "fraction": 0.0,
+          "definition": "No operational evidence."
+        }
       }
     },
     {
@@ -78,12 +138,24 @@
       "max_points": 15,
       "enabled": true,
       "source": "general sales practice",
-      "guidance": "Concrete evidence of timing: a stated renewal or quote need, expansion, new locations, hiring, a new contract, or a recent ownership change. Submitting the form alone is not a trigger.",
+      "guidance": "Concrete evidence of timing: a stated renewal or quote need, expansion, new locations or divisions, an acquisition, a new contract, or a recent ownership change. Submitting the form alone is not a trigger. General hiring, awards or routine marketing are not triggers unless tied to one of the events above.",
       "levels": {
-        "strong": {"fraction": 1.0, "definition": "An explicit near-term need or a clear growth event."},
-        "partial": {"fraction": 0.5, "definition": "General growth or activity that may create a need."},
-        "none": {"fraction": 0.0, "definition": "Evidence of a stable, no-change situation."},
-        "unknown": {"fraction": 0.0, "definition": "No timing evidence. This is the expected default."}
+        "strong": {
+          "fraction": 1.0,
+          "definition": "An explicit near-term need or a clear growth event."
+        },
+        "partial": {
+          "fraction": 0.5,
+          "definition": "Specific growth evidence that may create an insurance need (new location, new division, acquisition, big new contract)."
+        },
+        "none": {
+          "fraction": 0.0,
+          "definition": "Evidence of a stable, no-change situation."
+        },
+        "unknown": {
+          "fraction": 0.0,
+          "definition": "No timing evidence. This is the expected default."
+        }
       }
     }
   ]

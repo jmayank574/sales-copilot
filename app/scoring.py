@@ -13,13 +13,16 @@ def enabled_factors(rubric: dict) -> list[dict]:
     return [f for f in rubric["factors"] if f.get("enabled")]
 
 
-def compute(judgments: dict, rubric: dict) -> dict:
+def compute(judgments: dict, rubric: dict, context: dict | None = None) -> dict:
     """Turn per-factor judgments into a score. Claude supplies level, evidence and
     confidence; points and priority are computed here, never by the model.
 
     A level other than 'unknown' without evidence is downgraded to 'unknown'.
+    Without a LinkedIn profile, decision_maker is capped at 'partial' (a name match
+    on a website does not confirm who filled in the form).
     Disabled factors are excluded and the total is rescaled over the enabled ones.
     """
+    context = context or {}
     factors = enabled_factors(rubric)
     max_total = sum(f["max_points"] for f in factors)
     earned = 0.0
@@ -38,6 +41,10 @@ def compute(judgments: dict, rubric: dict) -> dict:
         if level != "unknown" and not evidence:
             note = "no evidence given, treated as unknown"
             level = "unknown"
+        if f["key"] == "decision_maker" and level == "strong" and not context.get("linkedin_available", True):
+            note = "role not confirmed by LinkedIn, capped at partial"
+            level = "partial"
+            confidence = "low"
         if level == "unknown":
             confidence = "low"
         points = f["max_points"] * f["levels"][level]["fraction"]

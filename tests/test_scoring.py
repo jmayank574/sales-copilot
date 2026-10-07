@@ -53,3 +53,15 @@ def test_unknown_trigger_caps_score_below_100_but_can_still_be_high():
     judgments["buying_trigger"] = j("unknown")
     r = scoring.compute(judgments, RUBRIC)
     assert 80 <= r["score"] < 100 and r["priority"] == "High"
+
+
+def test_decision_maker_capped_without_linkedin():
+    r = scoring.compute(all_factors("strong"), RUBRIC, {"linkedin_available": False})
+    dm = next(b for b in r["breakdown"] if b["key"] == "decision_maker")
+    assert dm["level"] == "partial" and dm["points"] == 7.5 and dm["confidence"] == "low" and dm["note"]
+    assert r["score"] < 100
+
+
+def test_decision_maker_not_capped_with_linkedin():
+    r = scoring.compute(all_factors("strong"), RUBRIC, {"linkedin_available": True})
+    assert r["score"] == 100
