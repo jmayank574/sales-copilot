@@ -61,7 +61,32 @@ def _tool(rubric: dict) -> dict:
     }
 
 
-def assess(lead: dict, linkedin: dict | None, website_text: str | None, rubric: dict | None = None) -> dict:
+OUTBOUND_NOTE = (
+    "This is an OUTBOUND prospect, not a form submitter. lead_name is the company name. The contact is whoever the "
+    "company website explicitly names as owner, founder, president or CEO. Judge decision_maker from that stated "
+    "leadership; if the site names none, use unknown. Use the google_maps_listing only for facts it contains. "
+    "The Maps review count is an indirect size signal only (a large count suggests an established client base, "
+    "not headcount); cite it as indirect evidence if you use it. A Maps address that is an apartment suggests a "
+    "home-based business."
+)
+
+HYPOTHESIS_NOTE = (
+    "VERTICAL UNDER TEST: {hypothesis} This vertical is NOT in Fernstone's published list; it is a hypothesis being "
+    "tested. For target_industry, judge fit to THIS vertical definition instead of the published list: strong = clearly "
+    "matches the definition; partial = mixed or unclear; none = clearly outside it. In the evidence, say that it is a "
+    "hypothesis outside the published verticals."
+)
+
+
+def assess(
+    lead: dict,
+    linkedin: dict | None,
+    website_text: str | None,
+    rubric: dict | None = None,
+    extra: dict | None = None,
+    mode: str = "inbound",
+    hypothesis: str | None = None,
+) -> dict:
     """Return {'judgments', 'company_summary', 'niche', 'primary_service', 'result'} where
     result is the code-computed score from app.scoring.compute."""
     rubric = rubric or scoring.load_rubric()
@@ -70,6 +95,12 @@ def assess(lead: dict, linkedin: dict | None, website_text: str | None, rubric: 
         "linkedin_profile": linkedin or "NOT AVAILABLE",
         "company_website_text": website_text or "NOT AVAILABLE",
     }
+    if extra:
+        payload["google_maps_listing"] = extra
+    if mode == "outbound":
+        payload["mode"] = OUTBOUND_NOTE
+        if hypothesis:
+            payload["vertical_under_test"] = HYPOTHESIS_NOTE.format(hypothesis=hypothesis)
     client = anthropic.Anthropic()
     resp = client.messages.create(
         model=os.environ.get("ANTHROPIC_MODEL", "claude-sonnet-5-5"),
@@ -88,5 +119,6 @@ def assess(lead: dict, linkedin: dict | None, website_text: str | None, rubric: 
         raise RuntimeError("Claude did not return a tool call")
     out = dict(block.input)
     judgments = {k: out.pop(k) for k in [f["key"] for f in scoring.enabled_factors(rubric)] if k in out}
-    result = scoring.compute(judgments, rubric, {"linkedin_available": bool(linkedin)})
+    context = {"linkedin_available": bool(linkedin), "contact_source": "form" if mode == "inbound" else "company_website"}
+    result = scoring.compute(judgments, rubric, context)
     return {**out, "judgments": judgments, "result": result}

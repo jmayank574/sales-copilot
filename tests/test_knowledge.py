@@ -61,6 +61,18 @@ def test_context_has_published_verticals_and_source_tags():
     assert "[site" in text and "[assumption]" in text and "[job post]" in text
 
 
+def test_outbound_routing_covers_every_priority_and_no_data():
+    rules = load("routing_outbound.json")["rules"]
+    covered = {p for x in rules for p in x["when"].get("priority", [])}
+    assert {"High", "Medium", "Low"} <= covered
+    assert any(x["when"].get("no_data") for x in rules)
+
+
+def test_outbound_guidelines_has_frontmatter():
+    text = (K / "outbound_guidelines.md").read_text(encoding="utf-8")
+    assert re.match(r"---\nname: .+\ndescription: .+\n---\n", text) and "## When to Use" in text
+
+
 def test_rubric_industry_factor_names_verticals():
     r = load("rubric.json")
     guidance = next(f for f in r["factors"] if f["key"] == "target_industry")["guidance"]

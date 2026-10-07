@@ -10,6 +10,9 @@ load_dotenv()
 LINKEDIN_ACTOR = "harvestapi/linkedin-profile-scraper"
 WEBSITE_ACTOR = "apify/website-content-crawler"
 MAX_SITE_CHARS = 6000
+# Apify's free plan caps memory across all concurrent runs at 16 GB. The crawler asks for up to
+# 8 GB by default, so a few simultaneous crawls get refused. 2 GB is plenty for 3 small pages.
+CRAWL_MEMORY_MB = 2048
 TIMEOUT = timedelta(seconds=240)
 
 
@@ -64,6 +67,7 @@ def _crawl(url: str, crawler_type: str) -> str:
             "proxyConfiguration": {"useApifyProxy": True},
         },
         timeout=TIMEOUT,
+        memory_mbytes=CRAWL_MEMORY_MB,
         logger=None,
     )
     items = c.dataset(run.default_dataset_id).iterate_items()

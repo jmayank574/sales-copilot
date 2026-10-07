@@ -62,6 +62,13 @@ def test_decision_maker_capped_without_linkedin():
     assert r["score"] < 100
 
 
+def test_outbound_owner_named_on_site_is_not_capped():
+    ctx = {"linkedin_available": False, "contact_source": "company_website"}
+    r = scoring.compute(all_factors("strong"), RUBRIC, ctx)
+    assert next(b for b in r["breakdown"] if b["key"] == "decision_maker")["level"] == "strong"
+    assert r["score"] == 100
+
+
 def test_decision_maker_not_capped_with_linkedin():
     r = scoring.compute(all_factors("strong"), RUBRIC, {"linkedin_available": True})
     assert r["score"] == 100

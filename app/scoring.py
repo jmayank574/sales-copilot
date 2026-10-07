@@ -18,8 +18,9 @@ def compute(judgments: dict, rubric: dict, context: dict | None = None) -> dict:
     confidence; points and priority are computed here, never by the model.
 
     A level other than 'unknown' without evidence is downgraded to 'unknown'.
-    Without a LinkedIn profile, decision_maker is capped at 'partial' (a name match
-    on a website does not confirm who filled in the form).
+    For form leads without a LinkedIn profile, decision_maker is capped at 'partial' (a name
+    match on a website does not confirm who filled in the form). Outbound lists pass
+    contact_source='company_website', where the owner named on the company's own site counts.
     Disabled factors are excluded and the total is rescaled over the enabled ones.
     """
     context = context or {}
@@ -41,7 +42,12 @@ def compute(judgments: dict, rubric: dict, context: dict | None = None) -> dict:
         if level != "unknown" and not evidence:
             note = "no evidence given, treated as unknown"
             level = "unknown"
-        if f["key"] == "decision_maker" and level == "strong" and not context.get("linkedin_available", True):
+        if (
+            f["key"] == "decision_maker"
+            and level == "strong"
+            and not context.get("linkedin_available", True)
+            and context.get("contact_source", "form") == "form"
+        ):
             note = "role not confirmed by LinkedIn, capped at partial"
             level = "partial"
             confidence = "low"

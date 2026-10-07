@@ -1,0 +1,36 @@
+{
+  "version": "0.1-draft",
+  "notes": "Outbound lists have no form submitter, so routes are about call order. First matching rule wins. Nothing is sent automatically.",
+  "rules": [
+    {
+      "name": "no_data",
+      "when": {"no_data": true},
+      "route": "Research first",
+      "action": "No usable website data. Verify the business and find the owner before any call."
+    },
+    {
+      "name": "low_confidence",
+      "when": {"confidence": ["Low"]},
+      "route": "Research first",
+      "action": "Evidence is thin, so the score is provisional. Find the owner and the basics (headcount, vehicles, client buildings) before calling."
+    },
+    {
+      "name": "high",
+      "when": {"priority": ["High"]},
+      "route": "Call first",
+      "action": "Top of the list. Find the owner via the search link, then call using the opener."
+    },
+    {
+      "name": "medium",
+      "when": {"priority": ["Medium"]},
+      "route": "Second wave",
+      "action": "Possible fit. Call after the High group, or when the owner is easy to reach."
+    },
+    {
+      "name": "low",
+      "when": {"priority": ["Low"]},
+      "route": "Skip",
+      "action": "Likely not a fit. Skip unless new information appears."
+    }
+  ]
+}
